@@ -36,12 +36,16 @@ def update_config_and_restart_service(new_ip):
             json.dump(config, file, indent=4)
             file.truncate()
     
-    os.system('systemctl restart your_service_name')
+    os.system('systemctl restart validator.service')
+    os.system('systemctl restart mytoncore.service')
 
 def main():
     while True:
         current_ip = get_external_ip()
+        print(f'Current IP: {current_ip}')
         last_ip = read_last_ip()
+        print(f'Last IP: {last_ip}')
+
 
         if current_ip != last_ip:
             update_config_and_restart_service(current_ip)
