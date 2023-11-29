@@ -42,7 +42,9 @@ def update_config_and_restart_service(new_ip):
 def main():
     while True:
         current_ip = get_external_ip()
+        dotted_ip=socket.inet_ntoa(struct.pack('>i',current_ip))
         print(f'Current IP: {current_ip}')
+        print(f'Current IP: {dotted_ip}')
         last_ip = read_last_ip()
         print(f'Last IP: {last_ip}')
 
