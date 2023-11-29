@@ -14,7 +14,7 @@ def get_external_ip():
 
 def read_last_ip():
     try:
-        with open('/var/ton-work/db/last_ip.txt', 'r') as file:
+        with open('last_ip.txt', 'r') as file:
             return int(file.read().strip())
     except FileNotFoundError:
         return None
