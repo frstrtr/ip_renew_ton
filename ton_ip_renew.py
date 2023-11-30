@@ -4,6 +4,10 @@ import os
 import json
 import socket
 import struct
+from datetime import datetime
+
+def get_timestamp():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 def get_external_ip():
     response = requests.get('https://httpbin.org/ip')
@@ -20,7 +24,7 @@ def read_last_ip():
         return None
 
 def write_last_ip(ip):
-    with open('/var/ton-work/db/last_ip.txt', 'w') as file:
+    with open('last_ip.txt', 'w') as file:
         file.write(str(ip))
 
 def update_config_and_restart_service(new_ip):
@@ -28,7 +32,6 @@ def update_config_and_restart_service(new_ip):
     with open(config_path, 'r+') as file:
         config = json.load(file)
 
-        # Assuming there's only one address block to update
         if config['addrs'][0]['ip'] != new_ip:
             config['addrs'][0]['ip'] = new_ip
 
@@ -42,18 +45,23 @@ def update_config_and_restart_service(new_ip):
 def main():
     while True:
         current_ip = get_external_ip()
-        dotted_ip=socket.inet_ntoa(struct.pack('>i',current_ip))
-        print(f'Current IP: {current_ip}')
-        print(f'Current IP: {dotted_ip}')
+        dotted_ip = socket.inet_ntoa(struct.pack('!L', current_ip))
+        print(f'[{get_timestamp()}] Current IP (Decimal): {current_ip}')
+        print(f'[{get_timestamp()}] Current IP (Dotted): {dotted_ip}')
+        
         last_ip = read_last_ip()
-        print(f'Last IP: {last_ip}')
-
+        last_ip_dotted = socket.inet_ntoa(struct.pack('!L', last_ip))
+        print(f'[{get_timestamp()}] Last IP: {last_ip}')
+        print(f'[{get_timestamp()}] Last IP (Dotted): {last_ip_dotted}')
 
         if current_ip != last_ip:
+            print(f'[{get_timestamp()}] IP changed. Updating config and restarting services.')
             update_config_and_restart_service(current_ip)
             write_last_ip(current_ip)
-        
-        time.sleep(1800) # Wait for 30 minutes
+        else:
+            print(f'[{get_timestamp()}] No change in IP.')
+
+        time.sleep(1800)  # Wait for 30 minutes
 
 if __name__ == "__main__":
     main()
