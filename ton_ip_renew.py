@@ -5,7 +5,7 @@ import json
 import socket
 import struct
 from datetime import datetime
-from aiogram import Bot, Dispatcher, executor, types
+from aiogram import Bot, Dispatcher, types
 import asyncio
 
 
@@ -76,7 +76,6 @@ def update_config_and_restart_service(new_ip):
 
 async def main():
     # Existing code for IP checking...
-    executor.start_polling(dp, skip_updates=True)
 
     while True:
         current_ip = get_external_ip()
@@ -101,4 +100,9 @@ async def main():
 
 
 if __name__ == "__main__":
+
+    from aiogram import executor
+
+    executor.start_polling(dp, skip_updates=True)
+
     asyncio.run(main())
