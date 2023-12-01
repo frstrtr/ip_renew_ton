@@ -28,11 +28,6 @@ def read_bot_config(file_path):
         return token, chat_id
 
 
-API_TOKEN, YOUR_CHAT_ID = read_bot_config('bot_config.conf')
-bot = Bot(token=API_TOKEN)
-dp = Dispatcher(bot)
-
-
 def get_timestamp():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -102,6 +97,10 @@ async def main():
 if __name__ == "__main__":
 
     from aiogram import executor
+
+    API_TOKEN, YOUR_CHAT_ID = read_bot_config('bot_config.conf')
+    bot = Bot(token=API_TOKEN)
+    dp = Dispatcher(bot)
 
     executor.start_polling(dp, skip_updates=True)
 
