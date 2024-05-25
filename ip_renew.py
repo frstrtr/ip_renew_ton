@@ -45,7 +45,7 @@ def update_config_and_restart_service(new_ip):
 
 def main():
     while True:
-       try:
+        try:
             current_ip = get_external_ip()
             dotted_ip = socket.inet_ntoa(struct.pack('>I', current_ip & 0xFFFFFFFF)) #socket.inet_ntoa(struct.pack('>i', current_ip))
             print(f'[{get_timestamp()}] Current IP (Decimal): {current_ip}')
@@ -65,11 +65,11 @@ def main():
                 print(f'[{get_timestamp()}] No change in IP.')
 
             time.sleep(60)  # Wait for 1 minute
-       except:
+        except:
            print('Error getting current ip!')
            print('#######################################################')
            print()
-#            time.sleep(60) # wait 1 minute
+           time.sleep(60) # wait 1 minute
 
 if __name__ == "__main__":
     main()
