@@ -1,1 +1,1 @@
-sudo python3 ip-renew.py
+sudo python3 ton_ip_renew.py

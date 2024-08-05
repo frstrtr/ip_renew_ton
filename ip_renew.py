@@ -10,11 +10,12 @@ def get_timestamp():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 def get_external_ip():
-    response = requests.get('https://httpbin.org/ip')
+    response = requests.get('http://httpbin.org/ip')
     ip_dotted = response.json()['origin']
     print ('Got responce from httpbin.org/ip: ', ip_dotted)
     # Convert dotted IP to decimal
     ip_decimal = struct.unpack('>i',socket.inet_aton(ip_dotted))[0] #struct.unpack('!L', socket.inet_aton(ip_dotted))[0]
+    print ('External IP decimal:', ip_decimal)
     return ip_decimal
 
 def read_last_ip():
